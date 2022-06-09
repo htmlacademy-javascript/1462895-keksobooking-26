@@ -1,3 +1,10 @@
+const TokyoCoordBorders = {
+  LAT_MIN: 35.65,
+  LAT_MAX: 35.7,
+  LNG_MIN: 139.7,
+  LNG_MAX: 139.8,
+};
+
 const OFFER_TYPES = [
   'palace',
   'flat',
@@ -64,43 +71,25 @@ const getRandomFloatNumber = (from, to, precision = 5) => {
 
 const generateSubArray = (arr) => arr.filter(() => Math.random() < 0.5);
 
-const getFixLengthNumberString = (x, targetLength) => {
-  if (x.toString().length < targetLength) {
-    return `0${getFixLengthNumberString(x, targetLength - 1)}`;
-  }
-
-  return x;
-};
-
 const createOffer = () => {
-  const lat = getRandomFloatNumber(35.65, 35.7, 5);
-  const lng = getRandomFloatNumber(139.7, 139.8, 5);
+  const lat = getRandomFloatNumber(TokyoCoordBorders.LAT_MIN, TokyoCoordBorders.LAT_MAX, 5);
+  const lng = getRandomFloatNumber(TokyoCoordBorders.LNG_MIN, TokyoCoordBorders.LNG_MAX, 5);
 
   return {
     author: {
-      avatar: `img/avatars/user${getFixLengthNumberString(getRandomIntegerNumber(1, 10), 2)}.png`,
+      avatar: `img/avatars/user${getRandomIntegerNumber(1, 10).toString().padStart(2, '0')}.png`,
     },
     offer: {
       title: 'Сдам',
-
       address: `${lat}, ${lng}`,
-
       price: getRandomIntegerNumber(1000, 100000),
-
       type: OFFER_TYPES[getRandomIntegerNumber(0, OFFER_TYPES.length - 1)],
-
       rooms: getRandomIntegerNumber(1, 10),
-
       guests: getRandomIntegerNumber(1, 10),
-
       checkin: OFFER_TYME_VALUES[getRandomIntegerNumber(0, OFFER_TYME_VALUES.length - 1)],
-
       checkout: OFFER_TYME_VALUES[getRandomIntegerNumber(0, OFFER_TYME_VALUES.length - 1)],
-
       features: generateSubArray(OFFER_FEATURES),
-
       description: 'Здесь можно жить',
-
       photos: generateSubArray(OFFER_PHOTOS),
     },
     location: {
