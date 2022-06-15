@@ -1,3 +1,8 @@
+const qEndingsMap = {
+  room: ['комната', 'комнаты', 'комнат'],
+  guest: ['гостя', 'гостей', 'гостей'],
+};
+
 const getRandomIntegerNumber = (from, to) => {
   if (from < 0) {
     throw new RangeError('Нижняя граница диаппазона не может быть отрицательной.');
@@ -35,4 +40,21 @@ const getRandomFloatNumber = (from, to, precision = 5) => {
 
 const generateSubArray = (arr) => arr.filter(() => Math.random() < 0.5);
 
-export { getRandomIntegerNumber, getRandomFloatNumber, generateSubArray };
+const getQEndings = (q = 1, word) => {
+  if (q % 100 < 11 || q % 100 > 14) {
+    if (q % 10 === 1) {
+      return `${q} ${qEndingsMap[word][0]}`;
+    } else if (q % 10 > 1 && q % 10 < 5) {
+      return `${q} ${qEndingsMap[word][1]}`;
+    }
+  }
+
+  return `${q} ${qEndingsMap[word][2]}`;
+};
+
+export {
+  getRandomIntegerNumber,
+  getRandomFloatNumber,
+  generateSubArray,
+  getQEndings,
+};
