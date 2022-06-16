@@ -1,24 +1,28 @@
-const mapFilters = document.querySelector('.map__filters');
-const mapFilterSelects = mapFilters.querySelectorAll('select');
-const mapFilterFieldsets = mapFilters.querySelectorAll('fieldset');
+const toggleFormElements = (formClass, isOn = true) => {
+  const form = document.querySelector(`.${formClass}`);
+  const formElements = form.querySelectorAll('select, fieldset');
 
-const adForm = document.querySelector('.ad-form');
-const adFormFieldsets = adForm.querySelectorAll('fieldset');
+  form.classList.toggle(`${formClass}--disabled`, isOn);
+
+  Array.from(formElements).forEach((el) => {
+    el.disabled = isOn;
+  });
+};
+
+const activateMapFilters = (isOn = true) => {
+  toggleFormElements('map__filters', isOn);
+};
+
+const activateAdFormElements = (isOn = true) => {
+  toggleFormElements('ad-form', isOn);
+};
 
 const activateInterface = (isOn = true) => {
-  adForm.classList.toggle('ad-form--disabled', isOn);
+  if (isOn) {
+    activateMapFilters(isOn);
+  }
 
-  Array.from(mapFilterSelects).forEach((el) => {
-    el.disabled = isOn;
-  });
-
-  Array.from(mapFilterFieldsets).forEach((el) => {
-    el.disabled = isOn;
-  });
-
-  Array.from(adFormFieldsets).forEach((el) => {
-    el.disabled = isOn;
-  });
+  activateAdFormElements(isOn);
 };
 
 export { activateInterface };
