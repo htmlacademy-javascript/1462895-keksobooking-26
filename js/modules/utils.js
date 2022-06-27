@@ -3,6 +3,14 @@ const qEndingsMap = {
   guest: ['гостя', 'гостей', 'гостей'],
 };
 
+const GenitiveForm = {
+  bungalow: 'бунгало',
+  flat: 'квартиры',
+  hotel: 'отеля',
+  house: 'дома',
+  palace: 'дворца',
+};
+
 const getRandomIntegerNumber = (from, to) => {
   if (from < 0) {
     throw new RangeError('Нижняя граница диаппазона не может быть отрицательной.');
@@ -52,9 +60,24 @@ const getQEndings = (q = 1, word) => {
   return `${q} ${qEndingsMap[word][2]}`;
 };
 
+const getGenitiveForm = (word) => GenitiveForm[word];
+
+const toggleFormElements = (formClass, isOn = true) => {
+  const form = document.querySelector(`.${formClass}`);
+  const formElements = form.querySelectorAll('select, fieldset');
+
+  form.classList.toggle(`${formClass}--disabled`, !isOn);
+
+  Array.from(formElements).forEach((el) => {
+    el.disabled = !isOn;
+  });
+};
+
 export {
   getRandomIntegerNumber,
   getRandomFloatNumber,
   generateSubArray,
   getQEndings,
+  getGenitiveForm,
+  toggleFormElements,
 };
