@@ -346,6 +346,7 @@ fieldset {
 }
 
 .ad-form__element {
+  position: relative;
   -ms-flex-preferred-size: 25%;
       flex-basis: 25%;
   min-height: 90px;
@@ -392,6 +393,17 @@ fieldset {
   outline: none;
   -webkit-box-shadow: 0 0 2px 2px #ff6547;
           box-shadow: 0 0 2px 2px #ff6547;
+}
+
+.ad-form__error {
+  position: absolute;
+  top: 65px;
+  left: 5px;
+
+  font-size: 10px;
+  line-height: 1.2;
+
+  color: #ff6547;
 }
 
 .ad-form__element--time {
