@@ -80,6 +80,8 @@ const validateForm = () => {
   pristine.addValidator(capacityInput, validateCapacity, FormError.CAPACITY_VALUE);
 
   const onTypeInputChange = () => {
+    priceInput.placeholder = PriceLimit.MIN[typeInput.value];
+
     if (priceInput.value || priceInput.closest('.has-danger')) {
       pristine.validate(priceInput);
     }
