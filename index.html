@@ -87,7 +87,13 @@
         </fieldset>
         <fieldset class="ad-form__element ad-form__element--wide">
           <label class="ad-form__label" for="title">Заголовок объявления</label>
-          <input id="title" name="title" type="text" placeholder="Милая, уютная квартирка в центре Токио">
+          <input id="title" name="title" type="text" placeholder="Милая, уютная квартирка в центре Токио"
+            data-pristine-required
+            data-pristine-minlength="30"
+            data-pristine-maxlength="100"
+            data-pristine-required-message="Введите заголовок объявления"
+            data-pristine-minlength-message="Заголовок должен содержать не менее 30 символов"
+            data-pristine-maxlength-message="Заголовок должен содержать не более 100 символов">
         </fieldset>
         <fieldset class="ad-form__element ad-form__element--wide">
           <label class="ad-form__label" for="address">Адрес (координаты)</label>

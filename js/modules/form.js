@@ -1,10 +1,5 @@
 import { toggleFormElements, getGenitiveForm } from './utils.js';
 
-const TitleLimit = {
-  MIN: 30,
-  MAX: 100,
-};
-
 const PriceLimit = {
   MIN: {
     bungalow: 0,
@@ -30,14 +25,12 @@ const GuestsCapacity = {
 };
 
 const adForm = document.querySelector('.ad-form');
-const titleInput = adForm.querySelector('#title');
 const typeInput = adForm.querySelector('#type');
 const priceInput = adForm.querySelector('#price');
 const roomsInput = adForm.querySelector('#room_number');
 const capacityInput = adForm.querySelector('#capacity');
 
 const FormError = {
-  TITLE_LENGTH: `Заголовок должен содержать от ${TitleLimit.MIN} до ${TitleLimit.MAX} символов`,
   PRICE_VALUE: () => `Укажите цену ${getGenitiveForm(typeInput.value)} от ${PriceLimit.MIN[typeInput.value]} до ${PriceLimit.MAX[typeInput.value]}`,
   CAPACITY_VALUE: () => {
     if (roomsInput.value === '100') {
@@ -58,10 +51,6 @@ const activateAdFormElements = (isOn = true) => {
   toggleFormElements('ad-form', isOn);
 };
 
-const validateTitle = (val) =>
-  val.length >= TitleLimit.MIN
-  && val.length <= TitleLimit.MAX;
-
 const validatePrice = (val) =>
   parseInt(val, 10) >= PriceLimit.MIN[typeInput.value]
   && parseInt(val, 10) <= PriceLimit.MAX[typeInput.value];
@@ -75,7 +64,6 @@ const validateForm = () => {
     errorTextClass: 'ad-form__error',
   }, false);
 
-  pristine.addValidator(titleInput, validateTitle, FormError.TITLE_LENGTH);
   pristine.addValidator(priceInput, validatePrice, FormError.PRICE_VALUE);
   pristine.addValidator(capacityInput, validateCapacity, FormError.CAPACITY_VALUE);
 
