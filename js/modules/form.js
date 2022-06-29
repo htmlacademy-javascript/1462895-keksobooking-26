@@ -75,24 +75,20 @@ const validateForm = () => {
     }
   };
 
-  const onRoomsInputChange = () => {
+  const onRoomOptionsChange = () => {
     pristine.validate(capacityInput);
   };
 
-  const onCapacityInputChange = () => {
-    pristine.validate(capacityInput);
-  };
-
-  const onAdFormChange = (evt) => {
+  const onAdFormSubmit = (evt) => {
     evt.preventDefault();
 
     pristine.validate();
   };
 
   typeInput.addEventListener('change', onTypeInputChange);
-  roomsInput.addEventListener('change', onRoomsInputChange);
-  capacityInput.addEventListener('change', onCapacityInputChange);
-  adForm.addEventListener('submit', onAdFormChange);
+  roomsInput.addEventListener('change', onRoomOptionsChange);
+  capacityInput.addEventListener('change', onRoomOptionsChange);
+  adForm.addEventListener('submit', onAdFormSubmit);
 };
 
 const initForm = () => {
