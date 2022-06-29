@@ -29,6 +29,8 @@ const typeInput = adForm.querySelector('#type');
 const priceInput = adForm.querySelector('#price');
 const roomsInput = adForm.querySelector('#room_number');
 const capacityInput = adForm.querySelector('#capacity');
+const timeFieldset = adForm.querySelector('.ad-form__element--time');
+const timeInputs = timeFieldset.querySelectorAll('select');
 
 const FormError = {
   PRICE_VALUE: () => `Укажите цену ${getGenitiveForm(typeInput.value)} от ${PriceLimit.MIN[typeInput.value]} до ${PriceLimit.MAX[typeInput.value]}`,
@@ -75,24 +77,29 @@ const validateForm = () => {
     }
   };
 
-  const onRoomsInputChange = () => {
+  const onRoomOptionsChange = () => {
     pristine.validate(capacityInput);
   };
 
-  const onCapacityInputChange = () => {
-    pristine.validate(capacityInput);
+  const onTimeInputChange = (evt) => {
+    for (const input of timeInputs) {
+      if (input !== evt.target) {
+        input.value = evt.target.value;
+      }
+    }
   };
 
-  const onAdFormChange = (evt) => {
+  const onAdFormSubmit = (evt) => {
     evt.preventDefault();
 
     pristine.validate();
   };
 
   typeInput.addEventListener('change', onTypeInputChange);
-  roomsInput.addEventListener('change', onRoomsInputChange);
-  capacityInput.addEventListener('change', onCapacityInputChange);
-  adForm.addEventListener('submit', onAdFormChange);
+  roomsInput.addEventListener('change', onRoomOptionsChange);
+  capacityInput.addEventListener('change', onRoomOptionsChange);
+  timeFieldset.addEventListener('change', onTimeInputChange);
+  adForm.addEventListener('submit', onAdFormSubmit);
 };
 
 const initForm = () => {

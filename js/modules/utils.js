@@ -3,7 +3,7 @@ const qEndingsMap = {
   guest: ['гостя', 'гостей', 'гостей'],
 };
 
-const GenitiveForm = {
+const genitiveForms = {
   bungalow: 'бунгало',
   flat: 'квартиры',
   hotel: 'отеля',
@@ -60,7 +60,7 @@ const getQEndings = (q = 1, word) => {
   return `${q} ${qEndingsMap[word][2]}`;
 };
 
-const getGenitiveForm = (word) => GenitiveForm[word];
+const getGenitiveForm = (word) => genitiveForms[word];
 
 const toggleFormElements = (formClass, isOn = true) => {
   const form = document.querySelector(`.${formClass}`);
