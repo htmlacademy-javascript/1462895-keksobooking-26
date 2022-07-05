@@ -15,6 +15,8 @@ const PriceLimit = {
     house: 100000,
     palace: 100000,
   },
+  START: 1000,
+  STEP: 1,
 };
 
 const GuestsCapacity = {
@@ -25,8 +27,10 @@ const GuestsCapacity = {
 };
 
 const adForm = document.querySelector('.ad-form');
+const titleInput = adForm.querySelector('#title');
 const typeInput = adForm.querySelector('#type');
 const priceInput = adForm.querySelector('#price');
+const priceSlider = adForm.querySelector('.ad-form__slider');
 const roomsInput = adForm.querySelector('#room_number');
 const capacityInput = adForm.querySelector('#capacity');
 const timeSelectsGroup = adForm.querySelector('.ad-form__element--time');
@@ -51,6 +55,33 @@ const validatePrice = (val) =>
 
 const validateCapacity = (val) => GuestsCapacity[roomsInput.value].includes(val);
 
+const priceRangeFilter = () => {
+  const onTypeOptionsChange = () => {
+    priceSlider.noUiSlider.set(priceInput.value);
+  };
+
+  noUiSlider.create(priceSlider, {
+    range: {
+      min: 0,
+      max: Math.max(...Object.values(PriceLimit.MAX)),
+    },
+    start: PriceLimit.START,
+    step: PriceLimit.STEP,
+    connect: 'lower',
+    format: {
+      to: (value) => value.toFixed(0),
+      from: (value) => parseInt(value, 10),
+    },
+  });
+
+  priceSlider.noUiSlider.on('update', () => {
+    priceInput.value = priceSlider.noUiSlider.get();
+  });
+
+  priceInput.addEventListener('change', onTypeOptionsChange);
+  typeInput.addEventListener('change', onTypeOptionsChange);
+};
+
 const initFormValidation = () => {
   const pristine = new Pristine(adForm, {
     classTo: 'ad-form__element',
@@ -61,7 +92,11 @@ const initFormValidation = () => {
   pristine.addValidator(priceInput, validatePrice, FormError.PRICE_VALUE);
   pristine.addValidator(capacityInput, validateCapacity, FormError.CAPACITY_VALUE);
 
-  const onTypeInputChange = () => {
+  const onTitleInputChange = () => {
+    pristine.validate(titleInput);
+  };
+
+  const onTypeOptionsChange = () => {
     priceInput.placeholder = PriceLimit.MIN[typeInput.value];
 
     if (priceInput.value || priceInput.closest('.has-danger')) {
@@ -87,11 +122,18 @@ const initFormValidation = () => {
     pristine.validate();
   };
 
-  typeInput.addEventListener('change', onTypeInputChange);
+  titleInput.addEventListener('change', onTitleInputChange);
+  typeInput.addEventListener('change', onTypeOptionsChange);
+  priceInput.addEventListener('change', onTypeOptionsChange);
   roomsInput.addEventListener('change', onRoomOptionsChange);
   capacityInput.addEventListener('change', onRoomOptionsChange);
   timeSelectsGroup.addEventListener('change', onTimeSelectChange);
   adForm.addEventListener('submit', onAdFormSubmit);
 };
 
-export { initFormValidation };
+const initForm = () => {
+  priceRangeFilter();
+  initFormValidation();
+};
+
+export { initForm };
