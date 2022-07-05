@@ -6,12 +6,55 @@ const DEFAULT_MAP_COORDS = {
   lat: 35.675,
   lng: 139.75,
 };
+
 const DEFAULT_MAP_SCALE = 13;
+
+const MAP_SETTINGS = {
+  layer: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+  attribution: {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  },
+};
+
+const PIN = {
+  main: {
+    width: 52,
+    height: 52,
+  },
+  offer: {
+    width: 40,
+    height: 40,
+  },
+};
 
 const mapCanvas = document.querySelector('#map-canvas');
 const addressInput = document.querySelector('#address');
 
-const offers = createOffers(10);
+const currentOffers = createOffers(10);
+
+const renderMarkers = (map, icon, offers) => {
+  offers.forEach((offer) => {
+    const {
+      location: {
+        lat,
+        lng,
+      } } = offer;
+
+    const marker = L.marker(
+      {
+        lat,
+        lng,
+      },
+      {
+        icon: icon,
+      },
+    );
+
+    marker
+      .addTo(map)
+      .bindPopup(createBaloon(offer));
+  });
+};
 
 const initMap = () => {
   if (!mapCanvas) {
@@ -25,23 +68,18 @@ const initMap = () => {
     })
     .setView(DEFAULT_MAP_COORDS, DEFAULT_MAP_SCALE);
 
-  L.tileLayer(
-    'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-    {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    },
-  ).addTo(map);
+  L.tileLayer(MAP_SETTINGS.layer, MAP_SETTINGS.attribution).addTo(map);
 
   const mainPinIcon = L.icon({
     iconUrl: './img/main-pin.svg',
-    iconSize: [52, 52],
-    iconAnchor: [26, 52],
+    iconSize: [PIN.main.width, PIN.main.height],
+    iconAnchor: [PIN.main.width / 2, PIN.main.height],
   });
 
   const pinIcon = L.icon({
     iconUrl: './img/pin.svg',
-    iconSize: [40, 40],
-    iconAnchor: [20, 40],
+    iconSize: [PIN.offer.width, PIN.offer.height],
+    iconAnchor: [PIN.offer.width / 2, PIN.offer.height],
   });
 
   const mainPinMarker = L.marker(
@@ -54,29 +92,12 @@ const initMap = () => {
 
   mainPinMarker.addTo(map);
 
-  offers.forEach((offer) => {
-    const {
-      location: {
-        lat,
-        lng,
-      } } = offer;
-    const marker = L.marker(
-      {
-        lat,
-        lng,
-      },
-      {
-        icon: pinIcon,
-      },
-    );
+  renderMarkers(map, pinIcon, currentOffers);
 
-    marker
-      .addTo(map)
-      .bindPopup(createBaloon(offer));
-  });
+  mainPinMarker.on('drag', ({ target }) => {
+    const { lat, lng } = target.getLatLng();
 
-  mainPinMarker.on('moveend', ({ target }) => {
-    addressInput.value = `${target.getLatLng().lat}, ${target.getLatLng().lng}`;
+    addressInput.value = `${lat}, ${lng}`;
   });
 };
 

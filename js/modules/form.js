@@ -1,5 +1,15 @@
 import { getGenitiveForm } from './utils.js';
 
+const adForm = document.querySelector('.ad-form');
+const titleInput = adForm.querySelector('#title');
+const typeInput = adForm.querySelector('#type');
+const priceInput = adForm.querySelector('#price');
+const priceSlider = adForm.querySelector('.ad-form__slider');
+const roomsInput = adForm.querySelector('#room_number');
+const capacityInput = adForm.querySelector('#capacity');
+const timeSelectsGroup = adForm.querySelector('.ad-form__element--time');
+const timeSelects = timeSelectsGroup.querySelectorAll('select');
+
 const PriceLimit = {
   MIN: {
     bungalow: 0,
@@ -26,16 +36,6 @@ const GuestsCapacity = {
   '100': ['0'],
 };
 
-const adForm = document.querySelector('.ad-form');
-const titleInput = adForm.querySelector('#title');
-const typeInput = adForm.querySelector('#type');
-const priceInput = adForm.querySelector('#price');
-const priceSlider = adForm.querySelector('.ad-form__slider');
-const roomsInput = adForm.querySelector('#room_number');
-const capacityInput = adForm.querySelector('#capacity');
-const timeSelectsGroup = adForm.querySelector('.ad-form__element--time');
-const timeSelects = timeSelectsGroup.querySelectorAll('select');
-
 const FormError = {
   PRICE_VALUE: () => `Укажите цену ${getGenitiveForm(typeInput.value)} от ${PriceLimit.MIN[typeInput.value]} до ${PriceLimit.MAX[typeInput.value]}`,
   CAPACITY_VALUE: () => {
@@ -55,7 +55,7 @@ const validatePrice = (val) =>
 
 const validateCapacity = (val) => GuestsCapacity[roomsInput.value].includes(val);
 
-const priceRangeFilter = () => {
+const initPriceRangeFilter = () => {
   const onTypeOptionsChange = () => {
     priceSlider.noUiSlider.set(priceInput.value);
   };
@@ -132,7 +132,7 @@ const initFormValidation = () => {
 };
 
 const initForm = () => {
-  priceRangeFilter();
+  initPriceRangeFilter();
   initFormValidation();
 };
 
