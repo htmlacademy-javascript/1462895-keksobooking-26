@@ -73,11 +73,20 @@ const toggleFormElements = (formClass, isOn = true) => {
   });
 };
 
+const activateMapFilters = (isOn = true) => {
+  toggleFormElements('map__filters', isOn);
+};
+
+const activateAdFormElements = (isOn = true) => {
+  toggleFormElements('ad-form', isOn);
+};
+
 export {
   getRandomIntegerNumber,
   getRandomFloatNumber,
   generateSubArray,
   getQEndings,
   getGenitiveForm,
-  toggleFormElements,
+  activateMapFilters,
+  activateAdFormElements
 };

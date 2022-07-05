@@ -1,4 +1,4 @@
-import { toggleFormElements, getGenitiveForm } from './utils.js';
+import { getGenitiveForm } from './utils.js';
 
 const PriceLimit = {
   MIN: {
@@ -45,21 +45,13 @@ const FormError = {
   },
 };
 
-const activateMapFilters = (isOn = true) => {
-  toggleFormElements('map__filters', isOn);
-};
-
-const activateAdFormElements = (isOn = true) => {
-  toggleFormElements('ad-form', isOn);
-};
-
 const validatePrice = (val) =>
   parseInt(val, 10) >= PriceLimit.MIN[typeInput.value]
   && parseInt(val, 10) <= PriceLimit.MAX[typeInput.value];
 
 const validateCapacity = (val) => GuestsCapacity[roomsInput.value].includes(val);
 
-const validateForm = () => {
+const initFormValidation = () => {
   const pristine = new Pristine(adForm, {
     classTo: 'ad-form__element',
     errorTextParent: 'ad-form__element',
@@ -102,11 +94,4 @@ const validateForm = () => {
   adForm.addEventListener('submit', onAdFormSubmit);
 };
 
-const initForm = () => {
-  activateMapFilters(false);
-  activateAdFormElements(false);
-  setTimeout(activateAdFormElements, 1000, true);
-  validateForm();
-};
-
-export { initForm };
+export { initFormValidation };

@@ -1,21 +1,21 @@
 import { getQEndings } from './utils.js';
 
-const offerCardTemplate = document.querySelector('#card')
+const baloonTemplate = document.querySelector('#card')
   .content
   .querySelector('.popup');
 
-const createOfferCard = (offer) => {
-  const offerCard = offerCardTemplate.cloneNode(true);
-  const avatarElement = offerCard.querySelector('.popup__avatar');
-  const titleElement = offerCard.querySelector('.popup__title');
-  const addressElement = offerCard.querySelector('.popup__text--address');
-  const priceElement = offerCard.querySelector('.popup__text--price');
-  const typeElement = offerCard.querySelector('.popup__type');
-  const capacityElement = offerCard.querySelector('.popup__text--capacity');
-  const timeElement = offerCard.querySelector('.popup__text--time');
-  const featuresElement = offerCard.querySelector('.popup__features');
-  const descriptionElement = offerCard.querySelector('.popup__description');
-  const photosElement = offerCard.querySelector('.popup__photos');
+const createBaloon = (offer) => {
+  const baloon = baloonTemplate.cloneNode(true);
+  const avatarElement = baloon.querySelector('.popup__avatar');
+  const titleElement = baloon.querySelector('.popup__title');
+  const addressElement = baloon.querySelector('.popup__text--address');
+  const priceElement = baloon.querySelector('.popup__text--price');
+  const typeElement = baloon.querySelector('.popup__type');
+  const capacityElement = baloon.querySelector('.popup__text--capacity');
+  const timeElement = baloon.querySelector('.popup__text--time');
+  const featuresElement = baloon.querySelector('.popup__features');
+  const descriptionElement = baloon.querySelector('.popup__description');
+  const photosElement = baloon.querySelector('.popup__photos');
 
   const {
     author: {
@@ -110,7 +110,7 @@ const createOfferCard = (offer) => {
   updateTextContent(descriptionElement, description);
   updatePhotos(photosElement, photos);
 
-  return offerCard;
+  return baloon;
 };
 
-export { createOfferCard };
+export { createBaloon };
