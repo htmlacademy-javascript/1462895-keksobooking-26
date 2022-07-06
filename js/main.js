@@ -1,13 +1,10 @@
-import { createOffers } from './modules/data.js';
-import { createOfferCard } from './modules/create-offer-card.js';
+import { activateMapFilters, activateAdFormElements } from './modules/utils.js';
+import { initMap } from './modules/map.js';
 import { initForm } from './modules/form.js';
 
 window.addEventListener('DOMContentLoaded', () => {
-  const map = document.querySelector('#map-canvas');
-  const offers = createOffers();
-  const [ offer ] = offers;
-
-  map.append(createOfferCard(offer));
-
+  activateMapFilters(false);
+  activateAdFormElements(false);
+  initMap();
   initForm();
 });
