@@ -1,6 +1,10 @@
-import { activateMapFilters, activateAdFormElements } from './utils.js';
-import { createOffers } from './data.js';
+import {
+  activateMapFilters, activateAdFormElements, getRandomArrayElements,
+  showAlert } from './utils.js';
+import { getData } from './api.js';
 import { createBaloon } from './create-baloon.js';
+
+const MAX_OFFERS = 10;
 
 const DEFAULT_MAP_COORDS = {
   lat: 35.675,
@@ -30,7 +34,7 @@ const PIN = {
 const mapCanvas = document.querySelector('#map-canvas');
 const addressInput = document.querySelector('#address');
 
-const currentOffers = createOffers(10);
+let currentOffers;
 
 const renderMarkers = (map, icon, offers) => {
   offers.forEach((offer) => {
@@ -92,7 +96,18 @@ const initMap = () => {
 
   mainPinMarker.addTo(map);
 
-  renderMarkers(map, pinIcon, currentOffers);
+  const onSuccessGetOffers = (offers) => {
+    currentOffers = offers;
+
+    renderMarkers(map, pinIcon, getRandomArrayElements(currentOffers, MAX_OFFERS));
+  };
+
+  const onFailGetOffers = () => {
+    showAlert('Не удалось загрузить данные <br>Попробуйте перезагрузить страницу');
+  };
+
+  getData(onSuccessGetOffers, onFailGetOffers);
+
 
   mainPinMarker.on('drag', ({ target }) => {
     const { lat, lng } = target.getLatLng();
