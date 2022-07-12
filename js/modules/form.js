@@ -216,7 +216,9 @@ const initFormValidation = () => {
     }
   };
 
-  const onAdFormReset = () => {
+  const onAdFormReset = (evt) => {
+    evt.preventDefault();
+
     resetForm();
     pristine.reset();
   };
