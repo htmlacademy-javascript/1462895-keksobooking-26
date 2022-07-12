@@ -1,4 +1,6 @@
 import { getGenitiveForm } from './utils.js';
+import { setDefaultAddress, resetMainPinMarker } from './map.js';
+import { sendData } from './api.js';
 
 const adForm = document.querySelector('.ad-form');
 const titleInput = adForm.querySelector('#title');
@@ -9,6 +11,15 @@ const roomsInput = adForm.querySelector('#room_number');
 const capacityInput = adForm.querySelector('#capacity');
 const timeSelectsGroup = adForm.querySelector('.ad-form__element--time');
 const timeSelects = timeSelectsGroup.querySelectorAll('select');
+const submitBtn = adForm.querySelector('.ad-form__submit');
+
+const successSubmitMessage = document.querySelector('#success')
+  .content
+  .querySelector('.success');
+
+const errorSubmitMessage = document.querySelector('#error')
+  .content
+  .querySelector('.error');
 
 const PriceLimit = {
   MIN: {
@@ -82,6 +93,79 @@ const initPriceRangeFilter = () => {
   typeInput.addEventListener('change', onTypeOptionsChange);
 };
 
+const resetForm = () => {
+  adForm.reset();
+  resetMainPinMarker();
+  setDefaultAddress();
+  priceSlider.noUiSlider.set(PriceLimit.START);
+  window.map.closePopup();
+};
+
+const showSubmitSuccessMessage = () => {
+  document.body.append(successSubmitMessage);
+
+  document.addEventListener('keyDown', onSuccessMessageEscPress);
+  successSubmitMessage.addEventListener('click', onSuccessMessageBodyClick);
+};
+
+const removeSubmitSuccessMessage = () => {
+  successSubmitMessage.remove();
+
+  document.removeEventListener('keyDown', onSuccessMessageEscPress);
+  successSubmitMessage.removeEventListener('click', onSuccessMessageBodyClick);
+};
+
+function onSuccessMessageEscPress (evt) {
+  if (evt.key === 'Escape' || evt.key === 'Esc') {
+    evt.preventDefault();
+
+    removeSubmitSuccessMessage();
+  }
+}
+
+function onSuccessMessageBodyClick () {
+  removeSubmitSuccessMessage();
+}
+
+const showSubmitErrorMessage = () => {
+  document.body.append(errorSubmitMessage);
+
+  document.addEventListener('keyDown', onErrorMessageEscPress);
+  errorSubmitMessage.addEventListener('click', onErrorMessageBodyClick);
+};
+
+const removeSubmitErrorMessage = () => {
+  errorSubmitMessage.remove();
+
+  document.removeEventListener('keyDown', onErrorMessageEscPress);
+  errorSubmitMessage.removeEventListener('click', onErrorMessageBodyClick);
+};
+
+function onErrorMessageEscPress (evt) {
+  if (evt.key === 'Escape' || evt.key === 'Esc') {
+    evt.preventDefault();
+
+    removeSubmitErrorMessage();
+  }
+}
+
+function onErrorMessageBodyClick () {
+  removeSubmitErrorMessage();
+}
+
+const onSuccessSendFormData = () => {
+  submitBtn.disabled = false;
+
+  resetForm();
+  showSubmitSuccessMessage();
+};
+
+const onFailSendFormData = () => {
+  submitBtn.disabled = false;
+
+  showSubmitErrorMessage();
+};
+
 const initFormValidation = () => {
   const pristine = new Pristine(adForm, {
     classTo: 'ad-form__element',
@@ -119,7 +203,22 @@ const initFormValidation = () => {
   const onAdFormSubmit = (evt) => {
     evt.preventDefault();
 
-    pristine.validate();
+    const isValid = pristine.validate();
+
+    if (isValid) {
+      submitBtn.disabled = true;
+
+      sendData(
+        onSuccessSendFormData,
+        onFailSendFormData,
+        new FormData(evt.target),
+      );
+    }
+  };
+
+  const onAdFormReset = () => {
+    resetForm();
+    pristine.reset();
   };
 
   titleInput.addEventListener('change', onTitleInputChange);
@@ -129,6 +228,7 @@ const initFormValidation = () => {
   capacityInput.addEventListener('change', onRoomOptionsChange);
   timeSelectsGroup.addEventListener('change', onTimeSelectChange);
   adForm.addEventListener('submit', onAdFormSubmit);
+  adForm.addEventListener('reset', onAdFormReset);
 };
 
 const initForm = () => {

@@ -60,6 +60,14 @@ const renderMarkers = (map, icon, offers) => {
   });
 };
 
+const setDefaultAddress = () => {
+  addressInput.value = `${DEFAULT_MAP_COORDS.lat}, ${DEFAULT_MAP_COORDS.lng}`;
+};
+
+const resetMainPinMarker = () => {
+  window.mainPinMarker.setLatLng(DEFAULT_MAP_COORDS);
+};
+
 const initMap = () => {
   if (!mapCanvas) {
     return;
@@ -94,6 +102,11 @@ const initMap = () => {
     },
   );
 
+  window.map = map;
+  window.mainPinMarker = mainPinMarker;
+
+  setDefaultAddress(addressInput.value);
+
   mainPinMarker.addTo(map);
 
   const onSuccessGetOffers = (offers) => {
@@ -102,12 +115,11 @@ const initMap = () => {
     renderMarkers(map, pinIcon, getRandomArrayElements(currentOffers, MAX_OFFERS));
   };
 
-  const onFailGetOffers = () => {
-    showAlert('Не удалось загрузить данные <br>Попробуйте перезагрузить страницу');
+  const onFailGetOffers = (msg) => {
+    showAlert(msg);
   };
 
   getData(onSuccessGetOffers, onFailGetOffers);
-
 
   mainPinMarker.on('drag', ({ target }) => {
     const { lat, lng } = target.getLatLng();
@@ -116,4 +128,4 @@ const initMap = () => {
   });
 };
 
-export { initMap };
+export { setDefaultAddress, resetMainPinMarker, initMap };
