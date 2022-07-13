@@ -1,5 +1,5 @@
 import { getGenitiveForm } from './utils.js';
-import { setDefaultAddress, resetMainPinMarker } from './map.js';
+import { setDefaultAddress, resetMap, resetMainPinMarker } from './map.js';
 import { sendData } from './api.js';
 
 const adForm = document.querySelector('.ad-form');
@@ -12,6 +12,7 @@ const capacityInput = adForm.querySelector('#capacity');
 const timeSelectsGroup = adForm.querySelector('.ad-form__element--time');
 const timeSelects = timeSelectsGroup.querySelectorAll('select');
 const submitBtn = adForm.querySelector('.ad-form__submit');
+const resetBtn = adForm.querySelector('.ad-form__reset');
 
 const successSubmitMessage = document.querySelector('#success')
   .content
@@ -95,28 +96,33 @@ const initPriceRangeFilter = () => {
 
 const resetForm = () => {
   adForm.reset();
+  resetMap();
   resetMainPinMarker();
-  setDefaultAddress();
-  priceSlider.noUiSlider.set(PriceLimit.START);
-  window.map.closePopup();
+
+  setTimeout(() => {
+    setDefaultAddress();
+    priceSlider.noUiSlider.set(PriceLimit.START);
+  });
 };
+
+const isEscEvent = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
 
 const showSubmitSuccessMessage = () => {
   document.body.append(successSubmitMessage);
 
-  document.addEventListener('keyDown', onSuccessMessageEscPress);
+  document.addEventListener('keydown', onSuccessMessageEscPress);
   successSubmitMessage.addEventListener('click', onSuccessMessageBodyClick);
 };
 
 const removeSubmitSuccessMessage = () => {
   successSubmitMessage.remove();
 
-  document.removeEventListener('keyDown', onSuccessMessageEscPress);
+  document.removeEventListener('keydown', onSuccessMessageEscPress);
   successSubmitMessage.removeEventListener('click', onSuccessMessageBodyClick);
 };
 
 function onSuccessMessageEscPress (evt) {
-  if (evt.key === 'Escape' || evt.key === 'Esc') {
+  if (isEscEvent(evt)) {
     evt.preventDefault();
 
     removeSubmitSuccessMessage();
@@ -130,19 +136,19 @@ function onSuccessMessageBodyClick () {
 const showSubmitErrorMessage = () => {
   document.body.append(errorSubmitMessage);
 
-  document.addEventListener('keyDown', onErrorMessageEscPress);
+  document.addEventListener('keydown', onErrorMessageEscPress);
   errorSubmitMessage.addEventListener('click', onErrorMessageBodyClick);
 };
 
 const removeSubmitErrorMessage = () => {
   errorSubmitMessage.remove();
 
-  document.removeEventListener('keyDown', onErrorMessageEscPress);
+  document.removeEventListener('keydown', onErrorMessageEscPress);
   errorSubmitMessage.removeEventListener('click', onErrorMessageBodyClick);
 };
 
 function onErrorMessageEscPress (evt) {
-  if (evt.key === 'Escape' || evt.key === 'Esc') {
+  if (isEscEvent(evt)) {
     evt.preventDefault();
 
     removeSubmitErrorMessage();
@@ -216,9 +222,7 @@ const initFormValidation = () => {
     }
   };
 
-  const onAdFormReset = (evt) => {
-    evt.preventDefault();
-
+  const onAdFormReset = () => {
     resetForm();
     pristine.reset();
   };
@@ -230,7 +234,7 @@ const initFormValidation = () => {
   capacityInput.addEventListener('change', onRoomOptionsChange);
   timeSelectsGroup.addEventListener('change', onTimeSelectChange);
   adForm.addEventListener('submit', onAdFormSubmit);
-  adForm.addEventListener('reset', onAdFormReset);
+  resetBtn.addEventListener('click', onAdFormReset);
 };
 
 const initForm = () => {

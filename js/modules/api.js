@@ -1,23 +1,30 @@
+const BASE_URL = 'https://26.javascript.pages.academy/keksobooking';
+
+const Error = {
+  GET_DATA: 'Не удалось загрузить данные <br>Попробуйте перезагрузить страницу',
+  SEND_DATA: 'Не удалось отправить форму. Попробуйте ещё раз',
+};
+
 const getData = (onSuccess, onError) => {
-  fetch('https://26.javascript.pages.academy/keksobooking/data')
+  fetch(`${BASE_URL}/data`)
     .then((response) => {
       if (response.ok) {
         return response.json();
       }
 
-      onError('Не удалось загрузить данные <br>Попробуйте перезагрузить страницу');
+      onError(Error.GET_DATA);
     })
     .then((data) => {
       onSuccess(data);
     })
     .catch(() => {
-      onError('Не удалось загрузить данные <br>Попробуйте перезагрузить страницу');
+      onError(Error.GET_DATA);
     });
 };
 
 const sendData = (onSuccess, onError, body) => {
   fetch(
-    'https://26.javascript.pages.academy/keksobooking',
+    BASE_URL,
     {
       method: 'POST',
       body,
@@ -27,11 +34,11 @@ const sendData = (onSuccess, onError, body) => {
       if (response.ok) {
         onSuccess();
       } else {
-        onError('Не удалось отправить форму. Попробуйте ещё раз');
+        onError(Error.GET_DATA);
       }
     })
     .catch(() => {
-      onError('Не удалось отправить форму. Попробуйте ещё раз');
+      onError(Error.GET_DATA);
     });
 };
 
