@@ -1,6 +1,15 @@
 import { getGenitiveForm } from './utils.js';
-import { setDefaultAddress, resetMap, resetMainPinMarker } from './map.js';
+import {
+  rednderAllMarkers, setDefaultAddress, resetMap,
+  resetMainPinMarker
+} from './map.js';
 import { sendData } from './api.js';
+
+const DEFAUL_SELECT_VALUE = 'any';
+
+const filters= document.querySelector('.map__filters');
+const filterSelects = [...filters.querySelectorAll('select')];
+const features = [...filters.querySelectorAll('#housing-features input')];
 
 const adForm = document.querySelector('.ad-form');
 const titleInput = adForm.querySelector('#title');
@@ -94,8 +103,21 @@ const initPriceRangeFilter = () => {
   typeInput.addEventListener('change', onTypeOptionsChange);
 };
 
+const resetFilter = () => {
+  filterSelects.forEach((filterSelect) => {
+    filterSelect.value = DEFAUL_SELECT_VALUE;
+  });
+
+  features.forEach((feature) => {
+    feature.checked = false;
+  });
+
+  rednderAllMarkers();
+};
+
 const resetForm = () => {
   adForm.reset();
+  resetFilter();
   resetMap();
   resetMainPinMarker();
 
