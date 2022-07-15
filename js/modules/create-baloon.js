@@ -1,4 +1,4 @@
-import { getQEndings } from './utils.js';
+import { getQEndings, getNominativeForm, capitalizeFirstLetter } from './utils.js';
 
 const baloonTemplate = document.querySelector('#card')
   .content
@@ -95,7 +95,10 @@ const createBaloon = (offer) => {
   updateTextContent(titleElement, title);
   updateTextContent(addressElement, address);
   updateTextContent(priceElement, price, `${price} ₽/ночь`);
-  updateTextContent(typeElement, type);
+  updateTextContent(
+    typeElement,
+    capitalizeFirstLetter(getNominativeForm(type))
+  );
   updateTextContent(
     capacityElement,
     rooms && guests,

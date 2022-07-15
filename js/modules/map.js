@@ -2,6 +2,7 @@ import {
   activateMapFilters, activateAdFormElements, getRandomArrayElements,
   showAlert } from './utils.js';
 import { getData } from './api.js';
+import { initFilters } from './filters.js';
 import { createBaloon } from './create-baloon.js';
 
 const MAX_OFFERS = 10;
@@ -34,32 +35,39 @@ const PIN = {
 const mapCanvas = document.querySelector('#map-canvas');
 const addressInput = document.querySelector('#address');
 
-let currentOffers;
 let map;
+let markerGroup;
 let mainPinMarker;
 let pinIcon;
+let rednderAllMarkers;
 
-const renderMarkers = (icon, offers) => {
-  offers.forEach((offer) => {
-    const {
-      location: {
-        lat,
-        lng,
-      } } = offer;
+const createMarker = (offer) => {
+  const {
+    location: {
+      lat,
+      lng,
+    } } = offer;
 
-    const marker = L.marker(
-      {
-        lat,
-        lng,
-      },
-      {
-        icon,
-      },
-    );
+  const marker = L.marker(
+    {
+      lat,
+      lng,
+    },
+    {
+      icon: pinIcon,
+    },
+  );
 
-    marker
-      .addTo(map)
-      .bindPopup(createBaloon(offer));
+  marker
+    .addTo(markerGroup)
+    .bindPopup(createBaloon(offer));
+};
+
+const renderMarkers = (offers) => {
+  markerGroup.clearLayers();
+
+  getRandomArrayElements(offers, MAX_OFFERS).forEach((offer) => {
+    createMarker(offer);
   });
 };
 
@@ -90,9 +98,13 @@ const initMap = () => {
   }
 
   const onSuccessGetOffers = (offers) => {
-    currentOffers = offers;
 
-    renderMarkers(pinIcon, getRandomArrayElements(currentOffers, MAX_OFFERS));
+    renderMarkers(offers);
+    initFilters(offers, renderMarkers);
+
+    rednderAllMarkers = () => {
+      renderMarkers(offers);
+    };
   };
 
   const onFailGetOffers = (msg) => {
@@ -108,6 +120,8 @@ const initMap = () => {
     .setView(DEFAULT_MAP_COORDS, DEFAULT_MAP_ZOOM);
 
   L.tileLayer(MAP_SETTINGS.layer, MAP_SETTINGS.attribution).addTo(map);
+
+  markerGroup = L.layerGroup().addTo(map);
 
   const mainPinIcon = L.icon({
     iconUrl: './img/main-pin.svg',
@@ -140,4 +154,4 @@ const initMap = () => {
   });
 };
 
-export { setDefaultAddress, resetMap, resetMainPinMarker, initMap };
+export { rednderAllMarkers, setDefaultAddress, resetMap, resetMainPinMarker, initMap };

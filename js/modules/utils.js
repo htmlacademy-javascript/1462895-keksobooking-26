@@ -1,17 +1,18 @@
 const ALERT_SHOW_TIME = 5000;
 const ALERT_TRANSITION_TIME = 1000;
+const DEBOUNCE_DEFAULT_DELAY = 500;
 
 const qEndingsMap = {
   room: ['комната', 'комнаты', 'комнат'],
   guest: ['гостя', 'гостей', 'гостей'],
 };
 
-const genitiveForms = {
-  bungalow: 'бунгало',
-  flat: 'квартиры',
-  hotel: 'отеля',
-  house: 'дома',
-  palace: 'дворца',
+const wordForms = {
+  bungalow: ['бунгало', 'бунгало'],
+  flat: ['квартира', 'квартиры'],
+  hotel: ['отель', 'отеля'],
+  house: ['дом', 'дома'],
+  palace: ['дворец', 'дворца'],
 };
 
 const getQEndings = (q = 1, word) => {
@@ -26,7 +27,9 @@ const getQEndings = (q = 1, word) => {
   return `${q} ${qEndingsMap[word][2]}`;
 };
 
-const getGenitiveForm = (word) => genitiveForms[word];
+const getNominativeForm = (word) => wordForms[word][0];
+
+const getGenitiveForm = (word) => wordForms[word][1];
 
 const toggleFormElements = (formClass, isOn = true) => {
   const form = document.querySelector(`.${formClass}`);
@@ -64,6 +67,14 @@ const getRandomArrayElements = (elements, q = 10) => {
   return randomElements;
 };
 
+const capitalizeFirstLetter = (str) => {
+  if (!str) {
+    return str;
+  }
+
+  return str[0].toUpperCase() + str.slice(1);
+};
+
 const showAlert = (message) => {
   const alertContainer = document.createElement('div');
   alertContainer.style.zIndex = '1100';
@@ -91,11 +102,24 @@ const showAlert = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
+function debounce (callback, timeoutDelay = DEBOUNCE_DEFAULT_DELAY) {
+  let timeoutId;
+
+  return (...rest) => {
+    clearTimeout(timeoutId);
+
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+}
+
 export {
   getQEndings,
+  getNominativeForm,
   getGenitiveForm,
   activateMapFilters,
   activateAdFormElements,
   getRandomArrayElements,
+  capitalizeFirstLetter,
   showAlert,
+  debounce,
 };
