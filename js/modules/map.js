@@ -35,11 +35,11 @@ const PIN = {
 const mapCanvas = document.querySelector('#map-canvas');
 const addressInput = document.querySelector('#address');
 
-// let currentOffers;
 let map;
 let markerGroup;
 let mainPinMarker;
 let pinIcon;
+let rednderAllMarkers;
 
 const createMarker = (offer) => {
   const {
@@ -98,10 +98,13 @@ const initMap = () => {
   }
 
   const onSuccessGetOffers = (offers) => {
-    // currentOffers = offers;
 
     renderMarkers(offers);
-    initFilters(offers, map, renderMarkers);
+    initFilters(offers, renderMarkers);
+
+    rednderAllMarkers = () => {
+      renderMarkers(offers);
+    };
   };
 
   const onFailGetOffers = (msg) => {
@@ -151,4 +154,4 @@ const initMap = () => {
   });
 };
 
-export { setDefaultAddress, resetMap, resetMainPinMarker, initMap };
+export { rednderAllMarkers, setDefaultAddress, resetMap, resetMainPinMarker, initMap };
