@@ -1,6 +1,6 @@
 import { debounce } from './utils.js';
 
-const DEFAUL_SELECT_VALUE = 'any';
+const DEFAULT_SELECT_VALUE = 'any';
 
 const PrisePoint = {
   MIDDLE: 10000,
@@ -15,7 +15,7 @@ let roomsFilter;
 let guestsFilter;
 let features;
 
-const filterByType = (el) => typeFilter.value === DEFAUL_SELECT_VALUE
+const filterByType = (el) => typeFilter.value === DEFAULT_SELECT_VALUE
   || el.offer.type === typeFilter.value;
 
 const filterByPrice = (el) => {
@@ -32,10 +32,10 @@ const filterByPrice = (el) => {
   }
 };
 
-const filterByRooms = (el) => roomsFilter.value === DEFAUL_SELECT_VALUE
+const filterByRooms = (el) => roomsFilter.value === DEFAULT_SELECT_VALUE
   || el.offer.rooms.toString() === roomsFilter.value;
 
-const filterByGuests = (el) => guestsFilter.value === DEFAUL_SELECT_VALUE
+const filterByGuests = (el) => guestsFilter.value === DEFAULT_SELECT_VALUE
   || el.offer.guests.toString() === guestsFilter.value;
 
 const filterByFeatures = (el) => {

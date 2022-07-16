@@ -5,7 +5,7 @@ import {
 } from './map.js';
 import { sendData } from './api.js';
 
-const DEFAUL_SELECT_VALUE = 'any';
+const DEFAULT_SELECT_VALUE = 'any';
 
 const filters= document.querySelector('.map__filters');
 const filterSelects = [...filters.querySelectorAll('select')];
@@ -105,7 +105,7 @@ const initPriceRangeFilter = () => {
 
 const resetFilter = () => {
   filterSelects.forEach((filterSelect) => {
-    filterSelect.value = DEFAUL_SELECT_VALUE;
+    filterSelect.value = DEFAULT_SELECT_VALUE;
   });
 
   features.forEach((feature) => {
