@@ -52,7 +52,7 @@ const createBaloon = (offer) => {
     }
   };
 
-  const updatefeatures = (el, arr) => {
+  const updateFeatures = (el, arr) => {
     if (arr && arr.length) {
       el.innerHTML = '';
 
@@ -109,7 +109,7 @@ const createBaloon = (offer) => {
     checkin && checkout,
     `Заезд после ${checkin}, выезд до ${checkout}`
   );
-  updatefeatures(featuresElement, features);
+  updateFeatures(featuresElement, features);
   updateTextContent(descriptionElement, description);
   updatePhotos(photosElement, photos);
 
