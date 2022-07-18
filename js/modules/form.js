@@ -4,6 +4,7 @@ import {
   resetMainPinMarker
 } from './map.js';
 import { sendData } from './api.js';
+import { resetAllPreviews } from './media-preview.js';
 
 const DEFAULT_SELECT_VALUE = 'any';
 
@@ -120,6 +121,9 @@ const resetForm = () => {
   resetFilter();
   resetMap();
   resetMainPinMarker();
+  resetAllPreviews();
+
+  priceInput.placeholder = PriceLimit.MIN['flat'];
 
   setTimeout(() => {
     setDefaultAddress();
