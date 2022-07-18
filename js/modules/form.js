@@ -4,8 +4,9 @@ import {
   resetMainPinMarker
 } from './map.js';
 import { sendData } from './api.js';
+import { resetAllPreviews } from './media-preview.js';
 
-const DEFAUL_SELECT_VALUE = 'any';
+const DEFAULT_SELECT_VALUE = 'any';
 
 const filters= document.querySelector('.map__filters');
 const filterSelects = [...filters.querySelectorAll('select')];
@@ -105,7 +106,7 @@ const initPriceRangeFilter = () => {
 
 const resetFilter = () => {
   filterSelects.forEach((filterSelect) => {
-    filterSelect.value = DEFAUL_SELECT_VALUE;
+    filterSelect.value = DEFAULT_SELECT_VALUE;
   });
 
   features.forEach((feature) => {
@@ -120,6 +121,9 @@ const resetForm = () => {
   resetFilter();
   resetMap();
   resetMainPinMarker();
+  resetAllPreviews();
+
+  priceInput.placeholder = PriceLimit.MIN['flat'];
 
   setTimeout(() => {
     setDefaultAddress();
